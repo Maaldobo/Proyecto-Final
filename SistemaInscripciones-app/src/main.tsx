@@ -2,7 +2,7 @@ import React, { Children } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { Route, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import RootLayout from './routes/RootLayout.tsx'
 import Alumno from './routes/Alumno.tsx'
 import Horario from './components/Horario.tsx'
@@ -12,6 +12,7 @@ import EditarAlumno from './components/EditarAlumno.tsx'
 import EditarClase from './components/EditarClase.tsx'
 import Pagos from './components/Pagos.tsx'
 import Metricas from './components/Metricas.tsx'
+import { Switch } from '@mui/material'
 
 const routerConfig = createBrowserRouter([
   {
@@ -39,7 +40,7 @@ const routerConfig = createBrowserRouter([
        },
     ]
   }
-]);
+])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
