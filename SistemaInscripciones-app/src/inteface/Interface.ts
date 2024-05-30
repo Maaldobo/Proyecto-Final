@@ -8,8 +8,9 @@ interface admin{
 interface clase{
     id: string
     nombre: string
+    costo: number
 }
-interface Suscripcion {
+interface suscripcion {
     alumnoId: string
     claseId: string
     monto: number
@@ -21,6 +22,4 @@ interface alumno{
     nombre: string
     apellido: string
     uuid: string
-
-
 }
