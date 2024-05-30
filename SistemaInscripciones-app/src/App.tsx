@@ -1,35 +1,38 @@
-import { useEffect } from 'react';
-import './App.css'
-import Login from './components/Login'
-import { useAlumnoStore } from './store/StoreAlumno';
+import './App.css';
+import Login from './routes/Login';
+
+import { Container } from '@mui/material';
+import { Route, Routes } from 'react-router-dom';
+import Admin from './routes/Admin';
+import { useLoginStore } from './store/useLoginStore';
+
 
 
 function App() {
-  const MostrarAlumnos = () => {
-    const { alumnos, getAlumnos } = useAlumnoStore();
-  
-    useEffect(() => {
-      getAlumnos(); // Llama al método para obtener los alumnos tan pronto como el componente se monte
-    }, []);
+  const { isLoggedIn} = useLoginStore()
+
   return (
     <>
+    <Container>
+  
 
-    <h1>Sistema de Inscripciones</h1>
-      <Login></Login>
+    
+      <h1>ESCUELA DE MUSICA</h1>
+
+    </Container>
+
+<Routes>
+{isLoggedIn && (<Route path='/admin' element={<Admin/>}></Route>)}
+
+  <Route path='/' element={<Login/>}>
+    
+  </Route>   
 
 
-      return (
-    <div>
-      <h1>Lista de Alumnos</h1>
-      <ul>
-        {alumnos.map(alumno => (
-          <li key={alumno.id}>
-            {alumno.nombre} {alumno.apellido}
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+</Routes>
+
+
+     
     </>
   )
 }

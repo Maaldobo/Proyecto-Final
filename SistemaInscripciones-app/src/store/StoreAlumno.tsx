@@ -1,14 +1,17 @@
 import { create } from "zustand";
+import { getAlumnos } from "../services/alumnos-service";
 
 interface IAlumnoStore {
   alumnos: alumno[];
+  isLoading: boolean;
   addAlumno: (nuevoAlumno: alumno) => void;
   delAlumno: (alumnoId: string) => void;
-  getAlumnos: () => void; 
+  getAlumnos: () => void;
 }
 
-export const useAlumnoStore = create<IAlumnoStore>((set, get) => ({
+export const useAlumnoStore = create<IAlumnoStore>((set) => ({
   alumnos: [],
+  isLoading: false,
   addAlumno: (nuevoAlumno: alumno) =>
     set((state) => ({ alumnos: [...state.alumnos, nuevoAlumno] })),
   delAlumno: (alumnoId: string) =>
@@ -16,23 +19,17 @@ export const useAlumnoStore = create<IAlumnoStore>((set, get) => ({
       alumnos: state.alumnos.filter((alumno) => alumno.id !== alumnoId),
     })),
   getAlumnos: () => {
-    fetch('https://backend-subs-control.onrender.com/api/alumnos')
-      .then((response) => response.json())
-      .then((data) => {
-
-        const nuevosAlumnos = data.map((dato: alumno) => ({
-          id: dato.id,
-          nombre: dato.nombre,
-          apellido: dato.apellido,
-          uuid: dato.uuid,
-        }));
-
-
-        set((state) => ({ alumnos: [...state.alumnos, ...nuevosAlumnos] }));
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-       
-      });
+    set({ isLoading: true });
+    getAlumnos().then(
+      (response) => {
+        set({
+          alumnos: response,
+          isLoading: false,
+        });
+      }
+    ).catch((error) => {
+      console.error('Error fetching data:', error);
+      set({ isLoading: false });
+    });
   },
-}))
+}));

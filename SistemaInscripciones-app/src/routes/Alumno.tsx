@@ -1,13 +1,30 @@
-import MenuAlumno from "../components/MenuAlumno"
-import { Outlet } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Outlet, useParams } from "react-router-dom"
+import { getAlumnoByUUID } from "../services/alumnos-service"
+import MenuAlumno from "../components/alumno/MenuAlumno"
 
 function Alumno(){
-    return(
 
-    <>
-        <p>Alumno: </p>
+    const user = useParams()
+    const[userInfo, setUserInfo]=useState<alumno|null>(null)
+
+    useEffect(()=>{
+        loadData()
+    },[])
+
+    const loadData = async ()=>{
+        const data = await getAlumnoByUUID(user.uuid||"")
+        setUserInfo(data[0])
+        console.log(data)
+    }   
+
+    return(
+        
+        <>
+        <p>Alumno: {userInfo?.nombre+' '}{userInfo?.apellido}  </p>
         <MenuAlumno></MenuAlumno>
         <Outlet></Outlet>
+        
     </>
 )
     }
